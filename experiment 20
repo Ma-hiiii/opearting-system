@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define NUM_TRACKS 5
+int main() {
+    int tracks[NUM_TRACKS] = {55, 58, 60, 70, 18};
+    int initialPos = 50; 
+    int totalHeadMovement = 0;
+    printf("Initial track positions: ");   
+    for (int i = 0; i < NUM_TRACKS; ++i) {
+        printf("%d ", tracks[i]);
+    }
+    printf("\n\nLOOK Disk Scheduling:\n");
+    for (int i = 0; i < NUM_TRACKS - 1; ++i) {
+        for (int j = 0; j < NUM_TRACKS - i - 1; ++j) {
+            if (tracks[j] > tracks[j + 1]) {
+                int temp = tracks[j];
+                tracks[j] = tracks[j + 1];
+                tracks[j + 1] = temp;
+            }
+        }
+    }
+    int initialIndex = 0;
+    while (initialIndex < NUM_TRACKS && tracks[initialIndex] < initialPos) {
+        initialIndex++;
+    }
+    for (int i = initialIndex; i < NUM_TRACKS; ++i) {
+        totalHeadMovement += abs(initialPos - tracks[i]);
+        printf("Move from %d to %d: %d\n", initialPos, initialPos = tracks[i], abs(initialPos - tracks[i]));
+    }
+    for (int i = initialIndex - 1; i >= 0; --i) {
+        totalHeadMovement += abs(initialPos - tracks[i]);
+        printf("Move from %d to %d: %d\n", initialPos, initialPos = tracks[i], abs(initialPos - tracks[i]));
+    }
+    printf("\nTotal head movement: %d\nAverage head movement: %.2f\n", totalHeadMovement, (float)totalHeadMovement / NUM_TRACKS);
+    return 0;
+}
